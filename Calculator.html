@@ -67,7 +67,12 @@ form input.operator{
                     <div class="display">
                         <input type="text" name="display">
                     </div>
-
+                    <div>
+                        <input type="button" value="exp" onclick="display.value = Math.exp(display.value)" class="operator">
+                        <input type="button" value="π" onclick="display.value = Math.PI" class="operator">
+                        <input type="button" value="log2" onclick="display.value = Math.log2(display.value)" class="operator">
+                        <input type="button" value="log10" onclick="display.value = Math.log10(display.value)" class="operator">
+                    </div>
                     <div>
                         <input type="button" value="√" onclick="display.value = Math.sqrt(display.value)" class="operator">
                         <input type="button" value="x²" onclick="display.value = Math.pow(display.value, 2)" class="operator">
