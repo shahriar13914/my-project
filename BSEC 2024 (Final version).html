@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            table, th, td {
+                border: 1px solid white;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 15px;
+                background-color: aqua;
+                text-align: center;
+            }
+            th {
+                text-align: center;
+                background-color:greenyellow;
+            }
+            img {
+                display: block;
+                margin-left: auto;
+                margin-right:auto;
+            }
+            body{
+                background-color: whitesmoke;
+            }
+        </style>
+    </head>
+    <title>BSEC - Business & Social Entrepreneurship Club</title>
+    <body>
+        <img src="data:image/png;base64,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" alt="bsce" class="center" width="300" heigth="250">
+
+        <h1 align="center">BSEC Executive Members 2024</h1>
+
+        <h2 id="myHeader", align="center">Business & Social Entrepreneurship Club, Eastern University</h2>
+
+        <button onclick="displayResult()">Surprise!</button>
+
+<script>
+function displayResult() {
+  document.getElementById("myHeader").innerHTML = "BSECEU";
+}
+</script>
+
+        <table style="width:100%">
+        <tr>
+            <th>Position</th>
+            <th>Name</th>
+            <th>Contact Number</th>
+            <th>Online Link</th>
+        </tr>
+    <tr>
+        <td><b>President</b></td>
+        <td>Md. Nasir Ullah</td>
+        <td>01816540447</td>
+        <td><button onclick="location.href='https://www.facebook.com/profile.php?id=100022103926878';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Vice-President</b></td>
+        <td>Yeasin Arafat Abir</td>
+        <td>01300961813</td>
+        <td><button onclick="location.href='https://www.facebook.com/Abir.75.Arafat';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Vice-President</b></td>
+        <td>Kazi Raisul Islam</td>
+        <td>01771805544</td>
+        <td><button onclick="location.href='https://www.facebook.com/rk.raisul';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>General Secretary</b></td>
+        <td>Saifuzzaman Tamim</td>
+        <td>01632129780</td>
+        <td><button onclick="location.href='https://www.facebook.com/profile.php?id=100023776713592';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Treasurer</b></td>
+        <td>Bibi Soha</td>
+        <td>null</td>
+        <td><button onclick="location.href='https://www.facebook.com/nahina.soha';">Click to visit</button></td>
+    </tr>    
+    <tr>
+        <td><b>Organizing Secretary</b></td>
+        <td>Tania Akhter</td>
+        <td>null</td>
+        <td><button onclick="location.href='https://www.facebook.com/profile.php?id=100015036666818';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Joint Secretary</b></td>
+        <td>Emitiaz Ahmad</td>
+        <td>null</td>
+        <td><button onclick="location.href='https://www.facebook.com/profile.php?id=100077535561175';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Director of Content Writer</b></td>
+        <td>Adety Sarker</td>
+        <td>01921697921</td>
+        <td><button onclick="location.href='https://www.facebook.com/adety.sarker.3';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Membership Development Secretary</b></td>
+        <td>Morium Akhter Mim</td>
+        <td>null</td>
+        <td><button onclick="location.href='https://www.facebook.com/morium.mim375';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Office Secretary</b></td>
+        <td>Md. Kayes Khan</td>
+        <td>01768502623</td>
+        <td><button onclick="location.href='https://www.facebook.com/kayes978';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Event Secretary</b></td>
+        <td>Jannatul Ferdous Sadia</td>
+        <td>null</td>
+        <td><button onclick="location.href='https://www.facebook.com/jannat.arobie';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Publication Secretary</b></td>
+        <td>Emamul Marsalin</td>
+        <td>01875274010</td>
+        <td><button onclick="location.href='https://www.facebook.com/abrar.onabil.39';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Publicity Secretary</b></td>
+        <td>Md. Arif Bapary</td>
+        <td>01977444706</td>
+        <td><button onclick="location.href='https://www.facebook.com/profile.php?id=100043974083333';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>IT Secretary</b></td>
+        <td>Fahim Shahariar</td>
+        <td>01302625594</td>
+        <td><button onclick="location.href='https://www.facebook.com/fahim.shahriar360';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Logistics Secretary</b></td>
+        <td>Abul Khair</td>
+        <td>01865533021</td>
+        <td><button onclick="location.href='https://www.facebook.com/akmzisan';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Decorator Secretar</b></td>
+        <td>Farzana Rupa Dola</td>
+        <td>01978229868</td>
+        <td><button onclick="location.href='https://www.facebook.com/profile.php?id=100044969791494';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Branding & Creative Secretary</b></td>
+        <td>Rezwan Uddin Fahim</td>
+        <td>01904476948</td>
+        <td><button onclick="location.href='https://www.facebook.com/rezwan.uddin.fahim';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td><b>Photography Secretary</b></td>
+        <td>Habibur Rahamn</td>
+        <td>01308575541</td>
+        <td><button onclick="location.href='https://www.facebook.com/profile.php?id=100015931596140';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td>Executive Member</td>
+        <td>Halima Akhter Jerin</td>
+        <td>01302216958</td>
+        <td><button onclick="location.href='https://www.facebook.com/Halima.Zarin';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td>Executive Member</td>
+        <td>Ankon Saha</td>
+        <td>null</td>
+        <td><button onclick="location.href='https://www.facebook.com/profile.php?id=100083492216357';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td>Executive Member</td>
+        <td>Jinnat Jahan Jui</td>
+        <td>01304867744</td>
+        <td><button onclick="location.href='https://www.facebook.com/ornob.shakil.545';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td>Executive Member</td>
+        <td>Ayesha Akhter</td>
+        <td>null</td>
+        <td><button onclick="location.href='https://www.facebook.com/aysha.siddiqa.393950';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td>Executive Member</td>
+        <td>Rakibul Hasan</td>
+        <td>01943434835</td>
+        <td><button onclick="location.href='https://www.facebook.com/aysha.siddiqa.393950';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td>Executive Member</td>
+        <td>Afridi Hasan</td>
+        <td>01748894073</td>
+        <td><button onclick="location.href='https://www.facebook.com/profile.php?id=100060942763937';">Click to visit</button></td>
+    </tr>
+    <tr>
+        <td>Executive Member</td>
+        <td>Jarin Tasnim</td>
+        <td>01997846142</td>
+        <td><button onclick="location.href='https://www.facebook.com/profile.php?id=100066627888137';">Click to visit</button></td>
+    </tr>
+    </table>
+
+    <h3><i>For more  informatation, visit the link bellow</i></h3>
+       <button onclick="location.href='https://www.facebook.com/EU.BSEC';">Business & Social Entrepreneurship Club - Eastern University</button>
+
+       <p><q>Eastern University Business & Social Entrepreneurship club is the most active club of the university with the goal to offer a sophisticated and vibrant nexus for students, organizations and businesses of all kinds to meet, share ideas and discuss the issues of the day. Eastern University Business & Social Entrepreneurship Club is for anyone involved in the business and academic arenas.</q></p>
+
+       <h1 style="color:skyblue;" align="center">BSEC's Goals & Activities</h1>
+
+       <h2 style="color:skyblue;">Goals:</h2>
+
+       <ul>
+        <li>To develop practical business know-how.</li>
+        <li>To enhance communication skills.</li>
+        <li>To develop entrepreneurship, leadership and managerial skills.</li>
+        <li>To develop presentation skills.</li>
+        <li>To enhance case solving capability.</li>
+        <li>To create potential career paths.</li>
+        <li>To develop team spirit.</li>
+        <li>To be on track with contemporary business events.</li>
+        <li> To increase networks.</li>
+       </ul>
+
+       <h2 style="color:skyblue;">Activities:</h2>
+
+       <ul>
+        <li>Business Idea/ Plan competition.</li>
+        <li>Social Business Idea/ Plan competition.</li>
+        <li>Entrepreneurship Fair.</li>
+        <li>Case competition.</li>
+        <li>Quiz, Debate competition.</li>
+        <li>Business trips, Exhibitions, Job Fairs.</li>
+        <li>Seminars, Workshops, Business program and more.</li>
+       </ul>
+
+       <h2 align="center">Meeting Status</h2>
+       
+       <table style="width:100%">
+        <tr>
+            <th>Position</th>
+            <th>Name</th>
+            <th colspan="4">Status</th>
+        </tr>
+        <tr>
+            <td>President</td>
+            <td>Nasir</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Vice-President</td>
+            <td>Abir</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+        </tr> 
+        <tr>
+            <td>Vice-President</td>
+            <td>Raisul</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+        </tr>    
+        <tr>
+            <td>General Secretary</td>
+            <td>Tamim</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+        </tr>  
+        <tr>
+            <td>Treasurer</td>
+            <td>Soha</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Organizing Secretary</td>
+            <td>Tania</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+        </tr>
+        <tr>
+            <td>Joint Secretary</td>
+            <td>Emtiaz</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+        </tr>
+        <tr>
+            <td>Director of Content Writer</td>
+            <td>Adety</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Membership Development Secretary</td>
+            <td>Mim</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Office Secretary</td>
+            <td>Kayes</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+        </tr>
+        <tr>
+            <td>Event Secretary</td>
+            <td>Sadia</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Publication Secretary</td>
+            <td>Mursalin</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+        </tr>
+        <tr>
+            <td>Publicity Secretary</td>
+            <td>Arif</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+        </tr>
+        <tr>
+            <td>IT Secretary</td>
+            <td>Fahim</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Logistics Secretary</td>
+            <td>Zisan</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Decoration Secretary</td>
+            <td>Dola</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+        </tr>
+        <tr>
+            <td>Branding and Creative Secretary</td>
+            <td>Rezwan</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+        </tr>
+        <tr>
+            <td>Photography Secretary</td>
+            <td>Habib</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+        </tr>
+        <tr>
+            <td>Executive Member</td>
+            <td>Halima</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+        </tr>
+        <tr>
+            <td>Executive Member</td>
+            <td>Ankon</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Executive Member</td>
+            <td>Jui</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Executive Member</td>
+            <td>Ayesha</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Executive Member</td>
+            <td>Rakibul</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#10060</td>
+        </tr>
+        <tr>
+            <td>Executive Member</td>
+            <td>Afridi</td>
+            <td>&#9989</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#9989</td>
+        </tr>
+        <tr>
+            <td>Executive Member</td>
+            <td>Jarin</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+            <td>&#9989</td>
+            <td>&#10060</td>
+        </tr>
+    </table>
+    </body>
+</html>
