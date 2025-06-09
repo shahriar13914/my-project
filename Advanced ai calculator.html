@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced AI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .calculator-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            width: 100%;
+            max-width: 500px; /* Increased max-width to accommodate more buttons */
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .display {
+            background-color: #edf2f7;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: right;
+            font-size: 2.5em;
+            color: #2d3748;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            word-wrap: break-word;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .ai-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e0;
+            font-size: 1em;
+            color: #4a5568;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .ai-input:focus {
+            border-color: #4299e1;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* Changed to 5 columns for more buttons */
+            gap: 12px;
+        }
+        .btn {
+            background-color: #e2e8f0;
+            color: #2d3748;
+            font-size: 1.2em; /* Adjusted font size for more buttons */
+            padding: 18px 0;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn:hover {
+            background-color: #d1d8e0;
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+        .btn-operator {
+            background-color: #4299e1;
+            color: #ffffff;
+        }
+        .btn-operator:hover {
+            background-color: #3182ce;
+        }
+        .btn-equals {
+            background-color: #38a169;
+            color: #ffffff;
+            grid-column: span 2; /* Span 2 columns */
+        }
+        .btn-equals:hover {
+            background-color: #2f855a;
+        }
+        .btn-clear {
+            background-color: #e53e3e;
+            color: #ffffff;
+            grid-column: span 2; /* Span 2 columns */
+        }
+        .btn-clear:hover {
+            background-color: #c53030;
+        }
+        .btn-ai-solve, .btn-ai-convert {
+            background-color: #805ad5;
+            color: #ffffff;
+            width: 100%;
+            padding: 14px 0;
+            border-radius: 12px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-ai-solve:hover, .btn-ai-convert:hover {
+            background-color: #6b46c1;
+            transform: translateY(-2px);
+        }
+        .btn-ai-solve:active, .btn-ai-convert:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+        .ai-buttons-container {
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+        }
+        .ai-buttons-container button {
+            flex: 1;
+        }
+        .scientific-operator {
+            background-color: #33ffd8; /* Color from Calculator.html for operators */
+            color: #0a0a0a;
+        }
+        .scientific-operator:hover {
+            background-color: #26ccab;
+        }
+
+        @media (max-width: 600px) {
+            .display {
+                font-size: 2em;
+            }
+            .btn {
+                font-size: 1em; /* Further reduced font size for smaller screens */
+                padding: 12px 0;
+            }
+            .calculator-container {
+                padding: 16px;
+                gap: 12px;
+            }
+            .ai-buttons-container {
+                flex-direction: column;
+            }
+            .button-grid {
+                grid-template-columns: repeat(4, 1fr); /* Revert to 4 columns on smaller screens */
+            }
+            .btn-equals, .btn-clear {
+                grid-column: span 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div id="display" class="display">0</div>
+
+        <label for="aiInput"></label><input type="text" id="aiInput" class="ai-input" placeholder="Type problem (e.g., 'What is 15% of 300?' or 'Convert 5 miles to km')" />
+        
+        <div class="ai-buttons-container">
+            <button id="aiSolveBtn" class="btn-ai-solve">✨ Solve Math</button>
+            <button id="aiConvertBtn" class="btn-ai-convert">✨ Convert Units</button>
+        </div>
+
+        <div class="button-grid">
+            <!-- Scientific and control buttons -->
+            <button class="btn scientific-operator" onclick="appendInput('(')">(</button>
+            <button class="btn scientific-operator" onclick="appendInput(')')">)</button>
+            <button class="btn scientific-operator" onclick="calculateExp()">exp</button>
+            <button class="btn scientific-operator" onclick="calculatePI()">π</button>
+            <button class="btn scientific-operator" onclick="calculateLog2()">log2</button>
+
+            <button class="btn scientific-operator" onclick="calculateSqrt()">√</button>
+            <button class="btn scientific-operator" onclick="calculatePower(2)">x²</button>
+            <button class="btn scientific-operator" onclick="calculatePower(3)">x³</button>
+            <button class="btn scientific-operator" onclick="calculate2RootX()">2^√x</button>
+            <button class="btn scientific-operator" onclick="calculateLog10()">log10</button>
+
+            <button class="btn scientific-operator" onclick="calculateSin()">sin</button>
+            <button class="btn scientific-operator" onclick="calculateCos()">cos</button>
+            <button class="btn scientific-operator" onclick="calculateTan()">tan</button>
+            <button class="btn scientific-operator" onclick="calculateLog()">log</button>
+            <button class="btn scientific-operator" onclick="convertBase('bin')">Bin</button>
+
+            <button class="btn scientific-operator" onclick="convertBase('dec')">Dec</button>
+            <button class="btn scientific-operator" onclick="convertBase('hex')">Hex</button>
+            <button class="btn scientific-operator" onclick="convertBase('oct')">Oct</button>
+            <button class="btn btn-clear" id="clearBtn" style="grid-column: span 2;">AC</button> <!-- AC button spans 2 columns -->
+
+            <!-- Standard calculator buttons -->
+            <button class="btn btn-operator" id="divideBtn">/</button>
+            <button class="btn" id="sevenBtn">7</button>
+            <button class="btn" id="eightBtn">8</button>
+            <button class="btn" id="nineBtn">9</button>
+            <button class="btn btn-operator" id="multiplyBtn">*</button>
+
+            <button class="btn" id="fourBtn">4</button>
+            <button class="btn" id="fiveBtn">5</button>
+            <button class="btn" id="sixBtn">6</button>
+            <button class="btn btn-operator" id="subtractBtn">-</button>
+            <button class="btn" onclick="deleteLastChar()">DE</button> <!-- DE button -->
+
+            <button class="btn" id="oneBtn">1</button>
+            <button class="btn" id="twoBtn">2</button>
+            <button class="btn" id="threeBtn">3</button>
+            <button class="btn btn-operator" id="addBtn">+</button>
+            <button class="btn scientific-operator" onclick="calculatePercentage()">%</button> <!-- Percentage button -->
+
+
+            <button class="btn" id="zeroBtn">0</button>
+            <button class="btn" id="decimalBtn">.</button>
+            <button class="btn" onclick="appendInput('00')">00</button> <!-- 00 button -->
+            <button class="btn btn-equals" id="equalsBtn" style="grid-column: span 2;">=</button> <!-- Equals button spans 2 columns -->
+        </div>
+    </div>
+
+    <script>
+        // Get references to DOM elements
+        const display = document.getElementById('display');
+        const aiInput = document.getElementById('aiInput');
+        const aiSolveBtn = document.getElementById('aiSolveBtn');
+        const aiConvertBtn = document.getElementById('aiConvertBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const equalsBtn = document.getElementById('equalsBtn');
+
+        // Calculator state variables
+        let currentInput = '0'; // Stores the current number being input
+        let previousInput = ''; // Stores the first operand for calculations
+        let operator = null;    // Stores the selected operator
+
+        /**
+         * Updates the calculator display with the current input.
+         */
+        function updateDisplay() {
+            display.textContent = currentInput;
+        }
+
+        /**
+         * Handles clicks on number and decimal buttons.
+         * @param {string} number - The number or decimal point clicked.
+         */
+        function appendNumber(number) {
+            if (currentInput === '0' && number !== '.') {
+                currentInput = number;
+            } else if (number === '.' && currentInput.includes('.')) {
+                return; // Do nothing if decimal already exists
+            } else {
+                currentInput += number;
+            }
+            updateDisplay();
+        }
+
+        /**
+         * Appends an input directly to the current display string, used for parentheses, etc.
+         * @param {string} input - The string to append.
+         */
+        function appendInput(input) {
+            if (currentInput === '0' && input !== '.') {
+                currentInput = input;
+            } else {
+                currentInput += input;
+            }
+            updateDisplay();
+        }
+
+        /**
+         * Handles clicks on operator buttons.
+         * Stores the current input as the previous input and sets the operator.
+         * @param {string} op - The operator clicked (+, -, *, /).
+         */
+        function setOperator(op) {
+            if (currentInput === '') return;
+
+            if (previousInput !== '') {
+                calculateResult();
+            }
+            previousInput = currentInput;
+            operator = op;
+            currentInput = '';
+            updateDisplay();
+        }
+
+        /**
+         * Performs the calculation based on the stored operator and inputs.
+         */
+        function calculateResult() {
+            let result;
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+
+            if (isNaN(prev) || isNaN(current)) {
+                // If there's an expression like "2+3", eval it
+                try {
+                    currentInput = eval(currentInput).toString();
+                    previousInput = '';
+                    operator = null;
+                    updateDisplay();
+                    return;
+                } catch (e) {
+                    display.textContent = 'Error';
+                    currentInput = '0';
+                    previousInput = '';
+                    operator = null;
+                    return;
+                }
+            }
+
+            switch (operator) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    if (current === 0) {
+                        display.textContent = 'Error: Div by 0';
+                        currentInput = '0';
+                        previousInput = '';
+                        operator = null;
+                        return;
+                    }
+                    result = prev / current;
+                    break;
+                default:
+                    // If no operator, just display the current input or evaluate it if it's an expression
+                    try {
+                        currentInput = eval(currentInput).toString();
+                    } catch (e) {
+                        // Do nothing, currentInput is already set
+                    }
+                    updateDisplay();
+                    return;
+            }
+            currentInput = result.toString();
+            operator = null;
+            previousInput = '';
+            updateDisplay();
+        }
+
+        /**
+         * Resets the calculator to its initial state.
+         */
+        function clearCalculator() {
+            currentInput = '0';
+            previousInput = '';
+            operator = null;
+            aiInput.value = '';
+            updateDisplay();
+        }
+
+        /**
+         * Deletes the last character from the current input.
+         */
+        function deleteLastChar() {
+            currentInput = currentInput.slice(0, -1);
+            if (currentInput === '') {
+                currentInput = '0';
+            }
+            updateDisplay();
+        }
+
+        /** Scientific Functions from Calculator.html **/
+
+        function calculateExp() {
+            try {
+                currentInput = Math.exp(parseFloat(currentInput)).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function calculatePI() {
+            currentInput = Math.PI.toString();
+            updateDisplay();
+        }
+
+        function calculateLog2() {
+            try {
+                currentInput = Math.log2(parseFloat(currentInput)).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function calculateLog10() {
+            try {
+                currentInput = Math.log10(parseFloat(currentInput)).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function calculateSqrt() {
+            try {
+                currentInput = Math.sqrt(parseFloat(currentInput)).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function calculatePower(power) {
+            try {
+                currentInput = Math.pow(parseFloat(currentInput), power).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function calculate2RootX() {
+            try {
+                currentInput = (2 ** Math.sqrt(parseFloat(currentInput))).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function calculateSin() {
+            try {
+                currentInput = Math.sin(parseFloat(currentInput)).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function calculateCos() {
+            try {
+                currentInput = Math.cos(parseFloat(currentInput)).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function calculateTan() {
+            try {
+                currentInput = Math.tan(parseFloat(currentInput)).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function calculateLog() {
+            try {
+                currentInput = Math.log(parseFloat(currentInput)).toString();
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function convertBase(baseType) {
+            try {
+                const value = parseInt(currentInput, 10);
+                if (isNaN(value)) {
+                    currentInput = 'Error';
+                } else {
+                    switch (baseType) {
+                        case 'bin':
+                            currentInput = value.toString(2);
+                            break;
+                        case 'dec':
+                            currentInput = value.toString(10);
+                            break;
+                        case 'hex':
+                            currentInput = value.toString(16);
+                            break;
+                        case 'oct':
+                            currentInput = value.toString(8);
+                            break;
+                    }
+                }
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        function calculatePercentage() {
+            try {
+                // If there's a previous input and operator (e.g., "50 + 10%"), calculate 10% of 50
+                if (previousInput !== '' && operator !== null) {
+                    const prev = parseFloat(previousInput);
+                    const current = parseFloat(currentInput);
+                    if (!isNaN(prev) && !isNaN(current)) {
+                        currentInput = (prev * (current / 100)).toString();
+                    } else {
+                        currentInput = 'Error';
+                    }
+                } else {
+                    // Otherwise, just divide the current input by 100
+                    currentInput = (parseFloat(currentInput) / 100).toString();
+                }
+            } catch {
+                currentInput = 'Error';
+            }
+            updateDisplay();
+        }
+
+        /** AI Functions from ai cal.html **/
+
+        /**
+         * Generic function to call the Gemini API with a given prompt.
+         * @param {string} userPrompt - The prompt to send to the LLM.
+         * @param {HTMLElement} btnToDisable - The button element to disable during API call.
+         * @param {string} loadingMessage - Message to show on display while loading.
+         * @returns {Promise<string|null>} The AI's response text, or null if an error occurred.
+         */
+        async function callGeminiAPI(userPrompt, btnToDisable, loadingMessage) {
+            display.textContent = loadingMessage;
+            if (btnToDisable) btnToDisable.disabled = true;
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: userPrompt }] });
+
+            const payload = { contents: chatHistory };
+            const apiKey = "AIzaSyA9Yl3aeKiMVkP_f4WwukzQ_79onR-o178";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error('AI response structure unexpected:', result);
+                    return 'AI could not process.';
+                }
+            } catch (error) {
+                console.error('Error calling Gemini API:', error);
+                return 'AI Error: ' + error.message;
+            } finally {
+                if (btnToDisable) btnToDisable.disabled = false;
+            }
+        }
+
+        /**
+         * Calls the Gemini API to solve a natural language math problem.
+         */
+        async function solveWithAI() {
+            const prompt = aiInput.value.trim();
+            if (!prompt) {
+                display.textContent = 'Please enter a problem for AI.';
+                return;
+            }
+
+            const llmPrompt = `Solve the following math problem: ${prompt}. Provide only the numerical answer without any additional text or explanation.`;
+            const aiResponse = await callGeminiAPI(llmPrompt, aiSolveBtn, 'Solving with AI...');
+
+            if (aiResponse) {
+                currentInput = aiResponse;
+                updateDisplay();
+            } else {
+                display.textContent = 'AI could not solve the problem.';
+            }
+        }
+
+        /**
+         * Calls the Gemini API to perform unit conversion.
+         */
+        async function convertUnitsWithAI() {
+            const prompt = aiInput.value.trim();
+            if (!prompt) {
+                display.textContent = 'Please enter units to convert.';
+                return;
+            }
+
+            const llmPrompt = `Convert ${prompt}. Provide only the numerical result and its unit, nothing else. For example, if asked 'Convert 10 kg to pounds', respond with '22.0462 lbs'. If asked 'Convert 5 miles to km', respond with '8.04672 km'.`;
+            const aiResponse = await callGeminiAPI(llmPrompt, aiConvertBtn, 'Converting with AI...');
+
+            if (aiResponse) {
+                currentInput = aiResponse;
+                updateDisplay();
+            } else {
+                display.textContent = 'AI could not convert units.';
+            }
+        }
+
+        // Event Listeners
+        document.querySelectorAll('.button-grid .btn').forEach(button => {
+            const buttonText = button.textContent;
+            if (!isNaN(buttonText) && buttonText !== '') { // Number buttons
+                button.addEventListener('click', () => appendNumber(buttonText));
+            } else if (buttonText === '.') { // Decimal button
+                button.addEventListener('click', () => appendNumber(buttonText));
+            } else if (['+', '-', '*', '/'].includes(buttonText)) { // Operator buttons
+                button.addEventListener('click', () => setOperator(buttonText));
+            }
+            // Other buttons like AC, DE, =, 00, % have specific click handlers or onclick attributes
+        });
+
+        clearBtn.addEventListener('click', clearCalculator);
+        equalsBtn.addEventListener('click', calculateResult);
+        aiSolveBtn.addEventListener('click', solveWithAI);
+        aiConvertBtn.addEventListener('click', convertUnitsWithAI);
+
+        // Initial display update
+        updateDisplay();
+    </script>
+</body>
+</html>
